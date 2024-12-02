@@ -41,7 +41,9 @@ class ViewController: UIViewController {
         
         questionNumber = 0
         
-        updateUI()
+        progressBar.progress = 0
+        
+//        updateUI()
     }
     
     
@@ -53,35 +55,41 @@ class ViewController: UIViewController {
         
         if userAnswer == actualAnswer{
             print("Right")
+            sender.backgroundColor = UIColor.green
         }else{
             print("Wrong")
+            sender.backgroundColor = UIColor.red
         }
         
         
         if questionNumber < quiz.count - 1 {
-        //variable that keeps track of which question the user is reading
-        questionNumber += 1
-        print(questionNumber)
+            //variable that keeps track of which question the user is reading
+            questionNumber += 1
+            print(questionNumber)
         }else{
             print("Quiz done")
             questionNumber = 0
         }
         
         
-        
-        
         //Since this is in the button pressed function it updates the question everytime the button is pressed
-        updateUI()
-    
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+            self.updateUI()
+        }
+        
+        
     }
     
     //function to update question with new questionNumber
     func updateUI(){
         questionLabel.text = quiz[questionNumber].text
-    }
+        trueButton.backgroundColor = UIColor.clear
+        falseButton.backgroundColor = UIColor.clear
+        progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
+        }
+    
     
 
-}
 
 
 /*
@@ -91,3 +99,4 @@ class ViewController: UIViewController {
  
  
  */
+}
