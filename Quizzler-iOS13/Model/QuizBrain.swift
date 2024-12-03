@@ -28,6 +28,8 @@ struct QuizBrain{
         ]
     
     var questionNumber = 0
+    var score = 0
+    var userAnswer = ""
     
     func checkAnswer(_ userAnswer: String) -> Bool {
         if userAnswer == quiz[questionNumber].answer{
@@ -44,7 +46,7 @@ struct QuizBrain{
         
     
     func getProgress() -> Float{
-        let progress = Float(questionNumber) + 1 / Float(quiz.count)
+        let progress = (Float(questionNumber) + 1) / Float(quiz.count)
         return progress
     }
     
@@ -52,10 +54,25 @@ struct QuizBrain{
         if questionNumber < quiz.count - 1 {
             //variable that keeps track of which question the user is reading
             questionNumber += 1
-            print(questionNumber)
+            print("Question number: \(questionNumber + 1)")
         }else{
             print("Quiz done")
             questionNumber = 0
+            score = 0
+            print("Question number: \(questionNumber + 1)")
+        }
+    }
+    
+    mutating func getScore(answer: Bool) -> String {
+        if checkAnswer("True"){
+            self.score += 1
+            if questionNumber == 0{
+                score = 0
+            }
+            return "Score: \(score)"
+        }else{
+            self.score += 0
+            return "Score: \(score)"
         }
     }
     

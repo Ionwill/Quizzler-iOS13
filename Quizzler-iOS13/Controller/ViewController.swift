@@ -15,22 +15,23 @@ class ViewController: UIViewController {
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
     
+    @IBOutlet weak var scoreLabel: UILabel!
+    
+    
     var quizBrain = QuizBrain()
+    var userAnswer = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        progressBar.progress = quizBrain.getProgress()
+        scoreLabel.text = "Score: 0"
         
-        var questionNumber = 0
-        
-        progressBar.progress = 0
-        
-//        updateUI()
+        updateUI()
     }
     
     
     @IBAction func answerButtonPressed(_ sender: UIButton) {
-        
         //True or False
         let userAnswer = sender.currentTitle!
         let userGotItRight = quizBrain.checkAnswer(userAnswer)
@@ -45,23 +46,26 @@ class ViewController: UIViewController {
         
         quizBrain.nextQuestion()
         
+        //adds +1 to the score each time the user gets a question right
+        scoreLabel.text = quizBrain.getScore(answer: quizBrain.checkAnswer(userAnswer))
+        
+        //Update Progress bar
+        progressBar.progress = quizBrain.getProgress()
         
         //Since this is in the button pressed function it updates the question everytime the button is pressed
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
             self.updateUI()
         }
-        
-        
     }
+    
     
     //function to update question with new questionNumber
     func updateUI(){
         questionLabel.text = quizBrain.getQuestionText()
-        
+//        progressBar.progress = quizBrain.getProgress()
+//        scoreLabel.text = quizBrain.getScore(answer: quizBrain.checkAnswer(userAnswer))
         trueButton.backgroundColor = UIColor.clear
         falseButton.backgroundColor = UIColor.clear
-        
-        progressBar.progress = quizBrain.getProgress()
         }
     
     
